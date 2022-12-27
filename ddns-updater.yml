@@ -1,21 +1,29 @@
-
 # https://github.com/qdm12/ddns-updater
 
 version: "3.7"
+
+networks:
+  backend-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${BACKEND_NET}
+        
 services:
   ddns-updater:
     image: qmcgaw/ddns-updater
+    hostname: ddns-updater
     container_name: ddns-updater
     network_mode: bridge
     restart: always
     ports:
       - ${DDNS_UPDATER_PORT}:8000/tcp
     volumes:
-      - ../dataDocker/ddns-updater:/updater/data
+      - ${DATAPATH}/ddns-updater:/updater/data
     environment:
       - CONFIG=
-      - PERIOD=5m
-      - UPDATE_COOLDOWN_PERIOD=5m
+      - PERIOD=${DDNS_PERIOD}
+      - UPDATE_COOLDOWN_PERIOD=${DDNS_PERIOD}
       - PUBLICIP_FETCHERS=all
       - PUBLICIP_HTTP_PROVIDERS=all
       - PUBLICIPV4_HTTP_PROVIDERS=all

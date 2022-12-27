@@ -1,0 +1,45 @@
+# https://github.com/linuxserver/docker-wireguard
+
+version: "3"
+
+networks:
+  backend-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${BACKEND_NET}
+
+services:
+  wireguard:
+    image: linuxserver/wireguard
+    hostname: wireguard
+    container_name: wireguard
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIME_ZONE}
+      - SERVERPORT=${WIREGUARD_PORT}
+      - SERVERURL=${MYDOMAIN} #optional
+      - PEERS=${WIREGUARD_PEERS} # How many peers to generate for you (clients)
+      - PEERDNS=${WIREGUARD_DNS} # AdGuard DNS
+      - INTERNAL_SUBNET=${WIREGUARD_INTERNAL_NET}
+      - ALLOWEDIPS=${WIREGUARD_ALLOWEDIPS}
+    volumes:
+      - ${DATAPATH}/wireguard:/config:rw
+      - /lib/modules:/lib/modules
+    ports:
+      - "${WIREGUARD_PORT}:${WIREGUARD_PORT}/udp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      backend-net:
+        aliases:
+          - wireguard
+        ipv4_address: ${WIREGUARD_IP}
+    #labels:
+      # Watchtower Update
+      #- "com.centurylinklabs.watchtower.enable=true"

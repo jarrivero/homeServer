@@ -10,7 +10,7 @@ $ sudo apt uppdate -y && sudo apt uprade -y
 ```
 2. Instalar docker
 ``` 
-sudo apt-get install \
+$ sudo apt-get install \
     ca-certificates \
     curl \
     gnupg \
