@@ -1,0 +1,11 @@
+{
+    "settings": [
+        {
+            "provider": "namecheap",
+            "domain": "example.com",
+            "host": "@,subdomain1,subdomain2",
+            "password": "MY_PASSWORD"
+        }
+    ]
+}
+
