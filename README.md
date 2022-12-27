@@ -36,4 +36,5 @@ $ sudo usermod -aG docker ${USER}
 $ docker run hello-world
 $ docker ps
 ```
+3. Instalar docker-compose
 
