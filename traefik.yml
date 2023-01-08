@@ -26,8 +26,7 @@ services:
       - "443:443"
       - "8080:8080"
     networks:   
-      traefik-net:
-        ipv4_address: 192.168.144.254
+      traefik-net: null
 
     volumes:
       # traefik static config
