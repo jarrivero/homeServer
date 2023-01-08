@@ -3,10 +3,7 @@ version: "3"
 networks:
   traefik-net:
     driver: bridge
-  backend-net:
-      ipam:
-        config:
-          - subnet: ${BACKEND_NET}  
+    name: traefik-net
 
 services:
   whoami:
@@ -26,11 +23,6 @@ services:
       - "traefik.http.routers.whoami.tls=true"
     networks:
       traefik-net: null
-      backend-net:
-        aliases:
-          - whoami
-        ipv4_address: ${WHOAMI_IP}
-
 
 
   whoami2:
@@ -50,7 +42,4 @@ services:
       - "traefik.http.routers.whoami2.tls=true"
     networks:
       traefik-net: null
-      backend-net:
-        aliases:
-          - whoami2
         
