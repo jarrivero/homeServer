@@ -21,6 +21,7 @@ services:
     volumes:
       - ${DATAPATH}/ddns-updater:/updater/data
     environment:
+      - TZ=${TIME_ZONE}
       - CONFIG=
       - PERIOD=${DDNS_PERIOD}
       - UPDATE_COOLDOWN_PERIOD=${DDNS_PERIOD}
