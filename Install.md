@@ -1,28 +1,28 @@
 
-1. Instalación del sistema Ubuntu Server 22.04 LTS
+##### 1. Instalación del sistema Ubuntu Server 22.04 LTS
 
 He escogido Ubuntu por estar familiarizado con el y con el gran soporte de comunidad que tiene, hay una gran guía de instalación en esta página: https://www.howtoforge.com/ubuntu-22-04-minimal-server/ 
 yo he elegido la version por defecto no la minima.
 
-2. Actualizar el sistema
+##### 2. Actualizar el sistema
 ```
 $ sudo apt uppdate -y && sudo apt uprade -y
 ```
-3. Instalar paquetes adicionales
+##### 3. Instalar paquetes adicionales
  ```
  $ sudo apt install lm-sensors vim-nox
  ```
-4. Establecer nombre del servidor
+##### 4. Establecer nombre del servidor
 ```
 $ sudo hostnamectl set-hostname NEW_HOSTNAME
 ```
-5. Establecer la zona horaria
+##### 5. Establecer la zona horaria
 ```
 $ timedatectl list-timezones
 $ sudo timedatectl set-timezone Europe/Madrid
 $ timedatectl
 ```
-6. Configurar el Firewall
+##### 6. Configurar el Firewall
 
 Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-20-04)
 ```
@@ -41,7 +41,7 @@ $ sudo ufw allow http
 $ sudo ufw allow https
 ``` 
 
-7. Instalar docker
+##### 7. Instalar docker
 
 Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04)
 ``` 
@@ -72,7 +72,7 @@ $ sudo usermod -aG docker ${USER}
 $ docker run hello-world
 $ docker ps
 ```
-8. Instalar docker-compose
+##### 8. Instalar docker-compose
 
 Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
 ```

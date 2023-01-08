@@ -4,6 +4,6 @@ Este repositorio describe el proceso de instalación y configuración de servici
 
 Se usa Traefik como balanceador de carga y ademas se encargará de obtener el certificado Let’s Encrypt para nuestro dominio
 
-1. Instalación del sistema [Ubuntu Server 22.04 LTS](Install.md)
+##### 1. Instalación del sistema [Ubuntu Server 22.04 LTS](Install.md)
 
 
