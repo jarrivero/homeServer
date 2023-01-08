@@ -3,9 +3,7 @@ version: "3"
 networks:
   traefik-net:
     driver: bridge
-    external: true
   backend-net:
-      external: false
       ipam:
         config:
           - subnet: ${BACKEND_NET}  
