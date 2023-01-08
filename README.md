@@ -3,18 +3,55 @@
 Este repositorio describe el proceso de instalación y configuración de servicios auto-alojados (selfhosted) que son  servidos con contedores docker que correrá sobre un linux (Debian, Raspbian, Ubuntu, etc) con dos discos, uno para el sistema y los datos de configuración y el otro como almacenamiento.
 
 Se usa Traefik como balanceador de carga y ademas se encargará de obtener el certificado Let’s Encrypt para nuestro dominio
+1. Instalación del sistema Ubuntu Server 22.04 LTS
+He escogido Ubuntu por estar familiarizado con el y con el gran soporte de comunidad que tiene, hay una gran guía de instalación en esta página: https://www.howtoforge.com/ubuntu-22-04-minimal-server/ 
+yo he elegido la version por defecto no la minima.
 
-1. Actualizar el sistema
+2. Actualizar el sistema
 ```
 $ sudo apt uppdate -y && sudo apt uprade -y
 ```
-2. Instalar docker
+3. Instalar paquetes adicionales
+ ```
+ $ sudo apt install lm-sensors vim-nox
+ ```
+4. Establecer nombre del servidor
+```
+$ sudo hostnamectl set-hostname NEW_HOSTNAME
+```
+5. Establecer la zona horaria
+```
+$ timedatectl list-timezones
+$ sudo timedatectl set-timezone Europe/Madrid
+$ timedatectl
+```
+6. Configurar el Firewall
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-20-04
+```
+# habilitar firewall
+$ sudo systemctl enable ufw
+$ sudo systemctl status ufw
+$ sudo ufw enable
+
+# politicas por defecto
+$ sudo ufw default deny incoming
+$ sudo ufw default allow outgoing
+
+# acceso a ssh, http y https
+$ sudo ufw allow from 192.168.1.7 to any port 22
+$ sudo ufw allow http
+$ sudo ufw allow https
 ``` 
-$ sudo apt-get install \
+
+2. Instalar docker
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
+``` 
+$ sudo apt install \
+    apt-transport-https \
     ca-certificates \
     curl \
     gnupg \
-    lsb-release
+    software-properties-common
 
 # añadir clave GPG oficial de Docker 
 $ sudo mkdir -p /etc/apt/keyrings
@@ -26,7 +63,7 @@ $ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # actualizar e instalar
-$ sudo apt updte
+$ sudo apt update
 $ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 # ejecutar el comando docker sin sudo
@@ -37,4 +74,11 @@ $ docker run hello-world
 $ docker ps
 ```
 3. Instalar docker-compose
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04
+```
+$ mkdir -p ~/.docker/cli-plugins/
+$ curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+$ chmod +x ~/.docker/cli-plugins/docker-compose
+$ docker compose version
+```
 
