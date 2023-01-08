@@ -15,9 +15,9 @@ services:
     restart: unless-stopped
     network_mode: host
     environment:
-      - TZ: ${TIME_ZONE}
-      - PUID: $PUID
-      - PGID: $PGID
+      - TZ=${TIME_ZONE}
+      - PUID=$PUID
+      - PGID=$PGID
     command:
       # Enabling docker provider
       - "--providers.docker=true"
