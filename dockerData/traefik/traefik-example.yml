@@ -24,11 +24,11 @@ entryPoints:
 
 providers:
   docker:
-    #endpoint: "unix:///var/run/docker.sock"   # Listen to the UNIX Docker socket
+    endpoint: "unix:///var/run/docker.sock"   # Listen to the UNIX Docker socket
     exposedByDefault: false                   # Only expose container that are explicitly enabled (using label traefik.enabled)
     network: "traefik-net"                    # Default network to use for connections to all containers.
-  #file:
-  #  filename: "/etc/traefik/dynamic.yml"      # Link to the dynamic configuration
+  file:
+    filename: "/etc/traefik/dynamic.yml"      # Link to the dynamic configuration
 
 
 # Certificate Resolvers are responsible for retrieving certificates from an ACME server

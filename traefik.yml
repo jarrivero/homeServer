@@ -10,10 +10,13 @@ networks:
 
 services:
   traefik:
-    image: "traefik:v2.9"
+    image: "traefik:v2.8"
     container_name: "traefik"
+    restart: always
     environment:
       - TZ=${TIME_ZONE}
+      - PUID: $PUID
+      - PGID: $PGID
     command:
       # Enabling docker provider
       - "--providers.docker=true"
@@ -31,7 +34,7 @@ services:
       # traefik static config
       - ${DATAPATH}/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       # dynamic config
-      - ${DATAPATH}/traefik/dynamic.yml:/etc/traefik/dynamic.yml
+      - ${DATAPATH}/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
       # letsencrypt data  
       - ${DATAPATH}/traefik/acme:/etc/traefik/acme
       - /var/run/docker.sock:/var/run/docker.sock:ro
