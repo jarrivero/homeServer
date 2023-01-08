@@ -14,8 +14,7 @@ services:
     image: qmcgaw/ddns-updater
     hostname: ddns-updater
     container_name: ddns-updater
-    network_mode: bridge
-    restart: always
+    restart: unless-stopped
     ports:
       - ${DDNS_UPDATER_PORT}:8000/tcp
     volumes:

@@ -4,6 +4,7 @@ networks:
   traefik-net:
     driver: bridge
   backend-net:
+      driver: bridge
       ipam:
         config:
           - subnet: ${BACKEND_NET}  
