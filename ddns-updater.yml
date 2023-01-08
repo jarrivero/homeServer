@@ -5,9 +5,11 @@ version: "3.7"
 networks:
   backend-net:
     driver: bridge
+    name: backend-net
     ipam:
       config:
-        - subnet: ${BACKEND_NET}
+        - subnet: ${BACKEND_NET}  
+
         
 services:
   ddns-updater:
