@@ -1,0 +1,9 @@
+middlewares:  
+    whitelist_www:
+      ipWhiteList:
+        sourceRange:
+          - "127.0.0.1"
+          - "82.223.82.50"
+          - "193.147.171.0/24"
+          - "79.116.67.95"
+          - "172.20.0.3"

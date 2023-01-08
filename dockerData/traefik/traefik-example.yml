@@ -1,0 +1,42 @@
+# Traefik static configuration file (/etc/traefik/traefik.yml)
+# See https://doc.traefik.io/traefik/getting-started/configuration-overview/#the-static-configuration
+# and https://doc.traefik.io/traefik/reference/static-configuration/cli/
+
+
+# log level: INFO|DEBUG|ERROR
+log:
+ level: DEBUG
+                 
+api:                        # Enable the dashboard
+  insecure: true
+  dashboard: true
+
+entryPoints:
+  web:
+    address: :80                # Create the HTTP entrypoint on port 80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  websecure:
+    address: :443
+
+providers:
+  docker:
+    #endpoint: "unix:///var/run/docker.sock"   # Listen to the UNIX Docker socket
+    exposedByDefault: false                   # Only expose container that are explicitly enabled (using label traefik.enabled)
+    network: "traefik-net"                    # Default network to use for connections to all containers.
+  #file:
+  #  filename: "/etc/traefik/dynamic.yml"      # Link to the dynamic configuration
+
+
+# Certificate Resolvers are responsible for retrieving certificates from an ACME server
+# See https://doc.traefik.io/traefik/https/acme/#certificate-resolvers
+certificatesResolvers:
+  myLetsEncripCert:
+    acme:
+      email: "user@mydomain.com"             # Email address used for registration
+      storage: "/etc/traefik/acme/acme.json"   # File or key used for certificates storage
+      httpChallenge:
+        entryPoint: web
