@@ -3,7 +3,9 @@
 Este repositorio describe el proceso de instalación y configuración de servicios auto-alojados (selfhosted) que son  servidos con contedores docker que correrá sobre un linux (Debian, Raspbian, Ubuntu, etc) con dos discos, uno para el sistema y los datos de configuración y el otro como almacenamiento.
 
 Se usa Traefik como balanceador de carga y ademas se encargará de obtener el certificado Let’s Encrypt para nuestro dominio
+
 1. Instalación del sistema Ubuntu Server 22.04 LTS
+
 He escogido Ubuntu por estar familiarizado con el y con el gran soporte de comunidad que tiene, hay una gran guía de instalación en esta página: https://www.howtoforge.com/ubuntu-22-04-minimal-server/ 
 yo he elegido la version por defecto no la minima.
 
@@ -26,6 +28,7 @@ $ sudo timedatectl set-timezone Europe/Madrid
 $ timedatectl
 ```
 6. Configurar el Firewall
+
 Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-20-04)
 ```
 # habilitar firewall
@@ -44,6 +47,7 @@ $ sudo ufw allow https
 ``` 
 
 7. Instalar docker
+
 Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04)
 ``` 
 $ sudo apt install \
@@ -74,6 +78,7 @@ $ docker run hello-world
 $ docker ps
 ```
 8. Instalar docker-compose
+
 Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
 ```
 $ mkdir -p ~/.docker/cli-plugins/
