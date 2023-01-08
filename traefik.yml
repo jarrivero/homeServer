@@ -2,12 +2,6 @@ version: "3"
 
 networks:
   traefik-net:
-    driver: bridge
-    name: traefik-net
-
-
-networks:
-  traefik-net:
     external:
       name: traefik-net
   default:
@@ -31,7 +25,8 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
-    traefik_proxy:
+    networks:   
+      traefik-net:
         ipv4_address: 192.168.144.254
 
     volumes:
