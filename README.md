@@ -26,8 +26,8 @@ $ sudo timedatectl set-timezone Europe/Madrid
 $ timedatectl
 ```
 6. Configurar el Firewall
+Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-20-04)
 ```
-# https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-20-04
 # habilitar firewall
 $ sudo systemctl enable ufw
 $ sudo systemctl status ufw
@@ -44,8 +44,8 @@ $ sudo ufw allow https
 ``` 
 
 7. Instalar docker
+Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04)
 ``` 
-# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
 $ sudo apt install \
     apt-transport-https \
     ca-certificates \
@@ -74,8 +74,8 @@ $ docker run hello-world
 $ docker ps
 ```
 8. Instalar docker-compose
+Tutorial básico en [Digitial Ocean](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04)
 ```
-# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04
 $ mkdir -p ~/.docker/cli-plugins/
 $ curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
 $ chmod +x ~/.docker/cli-plugins/docker-compose
