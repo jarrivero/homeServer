@@ -4,19 +4,12 @@ networks:
   traefik-net:
     driver: bridge
     name: traefik-net
-  backend-net:
-    driver: bridge
-    name: backend-net
-    ipam:
-      config:
-        - subnet: ${BACKEND_NET}  
 
 services:
   traefik:
     image: "traefik:v2.8"
     container_name: "traefik"
     restart: unless-stopped
-    network_mode: host
     environment:
       - TZ=${TIME_ZONE}
       - PUID=$PUID
@@ -32,8 +25,7 @@ services:
       - "8080:8080"
     networks:
       traefik-net: null
-      backend-net:
-        ipv4_address: ${TRAEFIK_IP}
+
     volumes:
       # traefik static config
       - ${DATAPATH}/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -42,6 +34,7 @@ services:
       # letsencrypt data  
       - ${DATAPATH}/traefik/acme:/etc/traefik/acme
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
 
   nginx-test:
     image: nginx:latest
@@ -52,11 +45,10 @@ services:
     networks:
       traefik-net: null
       backend-net: null
-
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx1.entrypoints=websecure"
-      - "traefik.http.routers.nginx1.rule=Host(`marven.es`)"
+      - "traefik.http.routers.nginx1.rule=Host(`${MYDOMAIN}.es`)"
       - "traefik.http.routers.nginx1.tls.certResolver=myLetsEncripCert"
       - "traefik.http.routers.nginx1.tls=true"
 
