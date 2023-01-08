@@ -3,11 +3,13 @@ version: "3"
 networks:
   traefik-net:
     driver: bridge
+    name: traefik-net
   backend-net:
-      driver: bridge
-      ipam:
-        config:
-          - subnet: ${BACKEND_NET}  
+    driver: bridge
+    name: backend-net
+    ipam:
+      config:
+        - subnet: ${BACKEND_NET}  
 
 services:
   traefik:
