@@ -1,24 +1,15 @@
-# https://github.com/qdm12/ddns-updater
+version: "3"
 
-version: "3.7"
+# https://github.com/qdm12/ddns-updater        
 
-networks:
-  backend-net:
-    driver: bridge
-    name: backend-net
-    ipam:
-      config:
-        - subnet: ${BACKEND_NET}  
-
-        
 services:
   ddns-updater:
     image: qmcgaw/ddns-updater
-    hostname: ddns-updater
     container_name: ddns-updater
+    hostname: ddns-updater
     restart: unless-stopped
     ports:
-      - ${DDNS_UPDATER_PORT}:8000/tcp
+      - ${DDNS_PORT}:8000/tcp
     volumes:
       - ${DATAPATH}/ddns-updater:/updater/data
     environment:
@@ -35,7 +26,7 @@ services:
       - HTTP_TIMEOUT=10s
 
       # Web UI
-      - LISTENING_PORT=${DDNS_UPDATER_PORT}
+      - LISTENING_PORT=${DDNS_PORT}
       - ROOT_URL=/
 
       # Backup

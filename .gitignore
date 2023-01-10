@@ -1,3 +1,8 @@
 .env
+*.bak
 dockerData/ddns-updater/config.json
+dockerData/ddns-updater/updates.json
+dockerData/traefik/acme
+dockerData/traefik/dynamic.yml
+dockerData/traefik/static.yml
 

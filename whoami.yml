@@ -1,10 +1,5 @@
 version: "3"
 
-networks:
-  traefik-net:
-    driver: bridge
-    name: traefik-net
-
 services:
   whoami:
     image: "traefik/whoami"
@@ -16,30 +11,9 @@ services:
       - "8501:8501" # HTTP port (host:container)
     labels:
       - "traefik.enable=true"
-      #- "traefik.http.routers.whoami.rule=Host(`whoami.marven.es`)"
       - "traefik.http.routers.whoami.rule=Host(`${MYDOMAIN}`) && PathPrefix(`/whoami`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certResolver=myLetsEncripCert"
       - "traefik.http.routers.whoami.tls=true"
     networks:
-      traefik-net: null
-
-
-  whoami2:
-    image: "traefik/whoami"
-    hostname: "whoami2"
-    container_name: "whoami2"
-    depends_on:
-      - traefik
-    ports:
-      - "8502:8502" # HTTP port (host:container)
-    labels:
-      - "traefik.enable=true"
-      #- "traefik.http.routers.whoami.rule=Host(`whoami.marven.es`)"
-      - "traefik.http.routers.whoami2.rule=Host(`${MYDOMAIN}`) && PathPrefix(`/whoami2`)"
-      - "traefik.http.routers.whoami2.entrypoints=websecure"
-      - "traefik.http.routers.whoami2.tls.certResolver=myLetsEncripCert"
-      - "traefik.http.routers.whoami2.tls=true"
-    networks:
-      traefik-net: null
-        
+      - traefik-net
