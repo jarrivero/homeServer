@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  nextcloud:
+    image: nextcloud
+    container_name: nextcloud
+    hostname: nextcloud
+    restart: unless-stopped
+    environment:
+      # Hook Nextcloud up with MySQL 
+      NEXTCLOUD_DB_HOST: ${NEXTCLOUD_DB_HOST} 
+      NEXTCLOUD_DB_USER: ${NEXTCLOUD_DB_USER}
+      NEXTCLOUD_DB_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
+      NEXTCLOUD_DB_NAME: ${NEXTCLOUD_DB_NAME}
+    ports:
+        - "8003:8003"
+    volumes:
+      # Store the contents of Nextcloud and enable local modifications
+      - ./data/volumes/nextcloud/html:/var/www/html
+    networks:
+      - traefik-net
+    depends_on:
+        - mariadb 
+    labels:
+      # Connect to Traefik
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      # Middlewares Caldav
+      - "traefik.http.middlewares.nextcloud-caldav.redirectregex.permanent=true"
+      - "traefik.http.middlewares.nextcloud-caldav.redirectregex.regex=^https://(.*)/.well-known/(card|cal)dav"
+      - "traefik.http.middlewares.nextcloud-caldav.redirectregex.replacement=https://$${1}/remote.php/dav/"
+      # Connect Middleware Caldav with Nextcloud-router
+      - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud-caldav@docker"
+      # Route HTTPS
+      - "traefik.http.routers.nextcloud-secure.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`${NEXTCLOUD_DOMAIN}`)"
+      # Enable TLS
+      - "traefik.http.routers.nextcloud-secure.tls=true"
+      # Enable Let's Encrypt HTTP challenge
+      - "traefik.http.routers.traefik-secure-secured.tls.certresolver=myLetsEncripCert"
+      # Enable HSTS headers and other security headers
+      - "traefik.http.routers.nextcloud-secure.middlewares=myheaders@file"
+

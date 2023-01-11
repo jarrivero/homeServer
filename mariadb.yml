@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    hostname: mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    ports:
+      - "${MARIADB_PORT}:3306"
+    environment:
+      - TZ=${TIME_ZONE}
+      - MARIADB_AUTO_UPGRADE=1
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+      #- MARIADB_USER:  YOUR_MYSQL_USER_HERE 
+      #- MARIADB_PASSWORD: YOUR_USER_PW_HERE
+    volumes:
+     - ${DATAPATH}/mariadb/mysql:/var/lib/mysql:rw

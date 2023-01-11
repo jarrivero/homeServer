@@ -1,0 +1,20 @@
+# https://hub.docker.com/r/phpmyadmin/phpmyadmin/
+
+version: '3'
+
+services:
+  phpmyadmin:
+    image: phpmyadmin
+    hostname: phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+      - traefik
+    environment:
+      - TZ=${TIME_ZONE}
+      - PMA_HOST=mariadb
+      - PMA_PORT=${MARIADB_PORT}
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    

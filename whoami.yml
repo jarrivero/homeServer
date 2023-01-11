@@ -5,15 +5,18 @@ services:
     image: "traefik/whoami"
     hostname: "whoami"
     container_name: "whoami"
+    restart: unless-stopped
     depends_on:
       - traefik
-    ports:
-      - "8501:8501" # HTTP port (host:container)
+    #ports:
+    #  - "${WHOAMI_PORT}:80" # HTTP port (host:container)
     labels:
       - "traefik.enable=true"
+      #- "traefik.http.services.whoami.loadbalancer.server.port=${WHOAMI_PORT}"
       - "traefik.http.routers.whoami.rule=Host(`${MYDOMAIN}`) && PathPrefix(`/whoami`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certResolver=myLetsEncripCert"
       - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.middlewares=ip_whitelist_admin@file"
     networks:
       - traefik-net

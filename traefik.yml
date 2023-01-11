@@ -25,7 +25,8 @@ services:
       # Provide the static config file.
       - ${DATAPATH}/traefik/static.yml:/etc/traefik/traefik.yml:ro 
       # dynamic config
-      - ${DATAPATH}/traefik/dynamic.yml:/etc/traefik/dynamic/conf.yml:ro 
+      - ${DATAPATH}/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro 
       # letsencrypt data  
       - ${DATAPATH}/traefik/acme:/etc/traefik/acme
-     
+      # logs
+      - ${DATAPATH}/traefik/log:/log     

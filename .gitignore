@@ -1,8 +1,10 @@
 .env
 *.bak
+data/
 dockerData/ddns-updater/config.json
 dockerData/ddns-updater/updates.json
 dockerData/traefik/acme
 dockerData/traefik/dynamic.yml
 dockerData/traefik/static.yml
-
+dockerData/traefik/log
+dockerData/mariadb/
