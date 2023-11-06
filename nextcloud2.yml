@@ -3,7 +3,7 @@ version: '3'
 services:
 
   nextcloud:
-    image: nextcloud:latest
+    image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
     hostname: nextcloud
     restart: unless-stopped
@@ -11,28 +11,21 @@ services:
       - TZ=${TIME_ZONE}
       - PUID=${PUID}
       - PGID=${PGID}
-      - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_DOMAIN}
-      # Hook Nextcloud up with MySQL 
-      - MYSQL_HOST=${NEXTCLOUD_DB_HOST} 
-      - MYSQL_USER=${NEXTCLOUD_DB_USER}
-      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD}
-      - MYSQL_DATABASE=${NEXTCLOUD_DB_NAME}
       - REDIS_HOST=redis
-    #ports:
-    #    - "8003:8003"
+      #- REDIS_PASSWORD=${REDIS_PWD}
+      - NEXTCLOUD_TRUSTED_DOMAINS=localhost ${NEXTCLOUD_DOMAIN} # each option should be separate by a space as per documentation - not sure if I need more/less at this point
+      - TRUSTED_PROXIES=192.168.99.A ${NEXTCLOUD_DOMAIN} # each option should be separate by a space as per documentation - not sure if I need more/less at this point
+      - OVERWRITEHOST=${NEXTCLOUD_DOMAIN} # from: https://help.nextcloud.com/t/docker-reverse-proxy-and-trusted-domains/117891/26
+      - OVERWRITEPROTOCOL=https
+      #- OVERWRITEWEBROOT=nextcloud
     volumes:
       # Store the contents of Nextcloud and enable local modifications
-      - /mnt/data/nextcloud:/mnt/nextcloud
-      - /mnt/data/nextcloud/html:/var/www/html
-      - /mnt/data/nextcloud/apps:/var/www/html/custom_apps
-      - /mnt/data/nextcloud/config:/var/www/html/config
-      - /mnt/data/nextcloud/data:/var/www/html/data
-      #- //mnt/data/nextcloud/theme:/var/www/html/themes/<YOUR_CUSTOM_THEME> 
+      - /mnt/data/nextcloud/config:/config
+      - /mnt/data/nextcloud/data:/data
+      - /mnt/data/fotos/Album:/mnt/AlbumFamiliar
     networks:
       - traefik-net
       - backend-net
-    depends_on:
-      - mariadb 
     links:
       - mariadb
       - redis
@@ -44,14 +37,13 @@ services:
       - "traefik.http.middlewares.sts_headers.headers.stsSeconds=15552000"
       - "traefik.http.middlewares.sts_headers.headers.stsIncludeSubdomains=True"
       # Middlewares Caldav
-      - "traefik.http.middlewares.nextcloud-caldav.redirectregex.permanent=true"
-      - "traefik.http.middlewares.nextcloud-caldav.redirectregex.regex=^https://(.*)/.well-known/(card|cal)dav"
-      - "traefik.http.middlewares.nextcloud-caldav.redirectregex.replacement=https://$${1}/remote.php/dav/"
-      # Connect Middleware Caldav with Nextcloud-router
-      - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud-caldav@docker,sts_headers"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.permanent=True"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.regex=https://(.*)/.well-known/(?:card|cal)dav"
+      - "traefik.http.middlewares.nextcloud_redirectregex.redirectregex.replacement=https://$${1}/remote.php/dav"
       # Route HTTPS
       - "traefik.http.routers.nextcloud-secure.entrypoints=websecure"
       - "traefik.http.routers.nextcloud-secure.rule=Host(`${NEXTCLOUD_DOMAIN}`)"
+      - "traefik.http.routers.nextcloud-secure.middlewares=nextcloud_redirectregex@docker,sts_headers@docker"
       #- "traefik.http.services.nextcloud.loadbalancer.server.port=8003"
       # Enable TLS
       - "traefik.http.routers.nextcloud-secure.tls=true"
@@ -59,4 +51,3 @@ services:
       - "traefik.http.routers.traefik-secure-secured.tls.certresolver=myLetsEncripCert"
       # Enable HSTS headers and other security headers
       #- "traefik.http.routers.nextcloud-secure.middlewares=myheaders@file"
-

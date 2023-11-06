@@ -3,25 +3,22 @@ version: "3.8"
 services:
   nginx:
     image: nginx:latest
-    container_name: nginx
     hostname: nginx
+    container_name: nginx
     restart: unless-stopped
     depends_on:
       - traefik
     environment:
       - TZ=${TIME_ZONE}
-    ports:
-      - "8081:80"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-net"
-      #- "traefik.http.services.nginx.loadbalancer.server.port=8081"
       - "traefik.http.routers.nginx.entrypoints=websecure"
       - "traefik.http.routers.nginx.rule=Host(`${MYDOMAIN}`)"
       - "traefik.http.routers.nginx.tls.certResolver=myLetsEncripCert"
-      #- "traefik.http.routers.nginx.middlewares=redirect-to-https@file"
       - "traefik.http.routers.nginx.tls=true"
     networks:
       - traefik-net
+      - backend-net
 
 

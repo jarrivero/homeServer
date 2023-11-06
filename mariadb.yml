@@ -1,12 +1,16 @@
 version: '3'
 
+networks:
+  backend-net:
+    external: false
+
 services:
   mariadb:
     image: mariadb:latest
     hostname: mariadb
     container_name: mariadb
     restart: unless-stopped
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    command: mysqld --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
     ports:
       - "${MARIADB_PORT}:3306"
     environment:
@@ -17,3 +21,5 @@ services:
       #- MARIADB_PASSWORD: YOUR_USER_PW_HERE
     volumes:
      - ${DATAPATH}/mariadb/mysql:/var/lib/mysql:rw
+    networks:
+      - backend-net

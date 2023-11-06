@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  whoami:
+    image: "traefik/whoami"
+    hostname: "whoami2"
+    container_name: "whoami2"
+    restart: unless-stopped
+    depends_on:
+      - traefik
+    environment:
+      - TZ=${TIME_ZONE}
+    labels:
+      - "traefik.enable=true"
+      #- "traefik.http.services.whoami.loadbalancer.server.port=${WHOAMI_PORT}"
+      - "traefik.http.routers.whoami2.rule=Host(`${MYDOMAIN}`) && PathPrefix(`/whoami2`)"
+      #- "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
+      - "traefik.http.routers.whoami2.entrypoints=websecure"
+      - "traefik.http.routers.whoami2.tls.certResolver=myLetsEncripCert"
+      - "traefik.http.routers.whoami2.tls=true"
+      - "traefik.http.routers.whoami2.middlewares=ip_whitelist_admin@file"
+    networks:
+      - traefik-net
+      - backend-net

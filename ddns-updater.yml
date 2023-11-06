@@ -37,3 +37,6 @@ services:
       - LOG_LEVEL=info
       - LOG_CALLER=hidden
       - SHOUTRRR_ADDRESSES=
+    networks:
+      #- traefik-net
+      - backend-net  

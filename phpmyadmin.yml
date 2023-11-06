@@ -4,7 +4,7 @@ version: '3'
 
 services:
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
     hostname: phpmyadmin
     container_name: phpmyadmin
     restart: unless-stopped
@@ -15,6 +15,19 @@ services:
       - TZ=${TIME_ZONE}
       - PMA_HOST=mariadb
       - PMA_PORT=${MARIADB_PORT}
-    ports:
-      - "${PHPMYADMIN_PORT}:80"
-    
+      - PMA_ABSOLUTE_URI=https://${MYDOMAIN}/pma/
+      #ports:
+      #- "8088:80"
+    labels:
+      - "traefik.enable=true"
+        #- "traefik.http.services.phpmyadmin.loadbalancer.server.port=8088"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`${MYDOMAIN}`) && PathPrefix(`/pma`)"
+      - "traefik.http.middlewares.phpmyadmin-stripprefix.stripprefix.prefixes=/pma"
+      - "traefik.http.middlewares.phpmyadmin-stripprefix.stripprefix.forceslash=true"
+      - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
+      - "traefik.http.routers.phpmyadmin.tls.certResolver=myLetsEncripCert"
+      - "traefik.http.routers.phpmyadmin.tls=true"
+      - "traefik.http.routers.phpmyadmin.middlewares=ip_whitelist_admin@file,phpmyadmin-stripprefix@docker"
+    networks:
+      - traefik-net
+      - backend-net    

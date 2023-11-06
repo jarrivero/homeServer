@@ -8,3 +8,5 @@ dockerData/traefik/dynamic.yml
 dockerData/traefik/static.yml
 dockerData/traefik/log
 dockerData/mariadb/
+dockerData/nextcloud/
+dockerData/redis/

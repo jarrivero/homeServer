@@ -1,16 +1,18 @@
 version: "3.9"
 
+name: homeServer
+
 networks:
   traefik-net:
     external: true
+  backend-net:
+    external: false
 
 services:
   traefik:
     container_name: traefik
     image: traefik:v2.9
     restart: unless-stopped
-    networks:
-      - traefik-net
     environment:
       - TZ=${TIME_ZONE}
       - PUID=$PUID
@@ -30,3 +32,6 @@ services:
       - ${DATAPATH}/traefik/acme:/etc/traefik/acme
       # logs
       - ${DATAPATH}/traefik/log:/log     
+    networks:
+      - traefik-net
+      - backend-net
